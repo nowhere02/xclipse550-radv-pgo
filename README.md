@@ -18,7 +18,6 @@ Oito testes de transferência passaram. Os quatro UNORM preservam os bytes de en
 
 `source-overlay/` contém as fontes congeladas usadas pelo driver, com as alterações desta candidata. `patches/` contém a alteração incremental de blit. `profiles/gameplay.profdata` é o feedback deCPU do driver. Isso não é PGO automático de shaders. `PROVENANCE.json` registra hashes, origem e limites de reprodução; o overlay requer a árvore base, headers gerados e dependências do radv-xclipse.
 
-O nome público é0.0.1. A biblioteca mantém os mesmos bytes e o identificador interno da build testada, para preservar a rastreabilidade.
 
 ## Créditos e licenças
 
