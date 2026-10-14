@@ -1,0 +1,93 @@
+--- a/src/amd/vulkan/meta/radv_meta_blit.c
++++ b/src/amd/vulkan/meta/radv_meta_blit.c
+@@ -8,6 +8,8 @@
+ #include "radv_meta.h"
+ #include "radv_sampler.h"
+ #include "vk_shader_module.h"
++#include "ac_xclipse_log.h"
++#include <stdatomic.h>
+ 
+ static enum glsl_sampler_dim
+ translate_sampler_dim(VkImageType type)
+@@ -519,6 +521,39 @@
+    radv_sampler_finish(device, &sampler);
+ }
+ 
++/* A one-to-one UNORM color blit samples texel centers without conversion.
++ * Preserve those texels directly using the existing copy path. Scaling, flips,
++ * sRGB, depth, 3D and extension chains retain the filtered implementation.
++ * This is independent of application names, title IDs and shader hashes.
++ */
++static bool
++xclipse_blit_is_exact_copy(const struct radv_image *src, const struct radv_image *dst,
++                           const VkBlitImageInfo2 *info)
++{
++   if (info->pNext || info->regionCount != 1 || info->srcImage == info->dstImage ||
++       (info->filter != VK_FILTER_NEAREST && info->filter != VK_FILTER_LINEAR) ||
++       src->vk.image_type != VK_IMAGE_TYPE_2D || dst->vk.image_type != VK_IMAGE_TYPE_2D ||
++       src->vk.samples != VK_SAMPLE_COUNT_1_BIT || dst->vk.samples != VK_SAMPLE_COUNT_1_BIT ||
++       src->vk.format != dst->vk.format ||
++       (src->vk.format != VK_FORMAT_R8G8B8A8_UNORM && src->vk.format != VK_FORMAT_B8G8R8A8_UNORM))
++      return false;
++
++   const VkImageBlit2 *r = &info->pRegions[0];
++   if (r->pNext || r->srcSubresource.aspectMask != VK_IMAGE_ASPECT_COLOR_BIT ||
++       r->dstSubresource.aspectMask != VK_IMAGE_ASPECT_COLOR_BIT ||
++       vk_image_subresource_layer_count(&src->vk, &r->srcSubresource) !=
++          vk_image_subresource_layer_count(&dst->vk, &r->dstSubresource) ||
++       r->srcOffsets[0].z != 0 || r->srcOffsets[1].z != 1 ||
++       r->dstOffsets[0].z != 0 || r->dstOffsets[1].z != 1)
++      return false;
++
++   const int32_t sx = r->srcOffsets[1].x - r->srcOffsets[0].x;
++   const int32_t sy = r->srcOffsets[1].y - r->srcOffsets[0].y;
++   const int32_t dx = r->dstOffsets[1].x - r->dstOffsets[0].x;
++   const int32_t dy = r->dstOffsets[1].y - r->dstOffsets[0].y;
++   return sx > 0 && sy > 0 && sx == dx && sy == dy;
++}
++
+ VKAPI_ATTR void VKAPI_CALL
+ radv_CmdBlitImage2(VkCommandBuffer commandBuffer, const VkBlitImageInfo2 *pBlitImageInfo)
+ {
+@@ -526,6 +561,41 @@
+    VK_FROM_HANDLE(radv_image, src_image, pBlitImageInfo->srcImage);
+    VK_FROM_HANDLE(radv_image, dst_image, pBlitImageInfo->dstImage);
+ 
++   if (xclipse_blit_is_exact_copy(src_image, dst_image, pBlitImageInfo)) {
++      const VkImageBlit2 *r = &pBlitImageInfo->pRegions[0];
++      const VkImageCopy2 region = {
++         .sType = VK_STRUCTURE_TYPE_IMAGE_COPY_2,
++         .srcSubresource = r->srcSubresource,
++         .srcOffset = r->srcOffsets[0],
++         .dstSubresource = r->dstSubresource,
++         .dstOffset = r->dstOffsets[0],
++         .extent = {r->srcOffsets[1].x - r->srcOffsets[0].x,
++                    r->srcOffsets[1].y - r->srcOffsets[0].y, 1},
++      };
++      const VkCopyImageInfo2 copy = {
++         .sType = VK_STRUCTURE_TYPE_COPY_IMAGE_INFO_2,
++         .srcImage = pBlitImageInfo->srcImage,
++         .srcImageLayout = pBlitImageInfo->srcImageLayout,
++         .dstImage = pBlitImageInfo->dstImage,
++         .dstImageLayout = pBlitImageInfo->dstImageLayout,
++         .regionCount = 1,
++         .pRegions = &region,
++      };
++#ifdef __ANDROID__
++      static atomic_bool reported;
++      if (ac_xclipse_log_level() >= 1 && !atomic_exchange(&reported, true)) {
++         AC_XCLIPSE_LOGP(ANDROID_LOG_INFO, "RADV_COPY",
++                        "[EXACT_BLIT] format=%u extent=%ux%u mip=%u/%u layers=%u",
++                        src_image->vk.format, region.extent.width, region.extent.height,
++                        region.srcSubresource.mipLevel, region.dstSubresource.mipLevel,
++                        vk_image_subresource_layer_count(&src_image->vk, &region.srcSubresource));
++      }
++#endif
++      /* CmdCopyImage2 owns its meta/conditional-rendering save and restore. */
++      radv_CmdCopyImage2(commandBuffer, &copy);
++      return;
++   }
++
+    radv_suspend_conditional_rendering(cmd_buffer);
+ 
+    radv_meta_begin(cmd_buffer);

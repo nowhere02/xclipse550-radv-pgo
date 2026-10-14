@@ -1,0 +1,84 @@
+{
+  "target": "SM-A576B / Samsung Xclipse 550",
+  "application": "Installed official Eden nightly",
+  "apk_sha256": "f429745c16f851ff05cdb12635271a9abd6843c4959cda8d52441deeb89b4f4c",
+  "settings": {
+    "docked": true,
+    "resolution": "1x",
+    "accuracy": "Normal",
+    "frame_generation": false,
+    "speed_percent": 100
+  },
+  "transfer_tests": [
+    {
+      "format": 37,
+      "width": 257,
+      "height": 131,
+      "result": "RESULT PASS format=37 extent=257x131 bytes=134668 copy_wrong=0 blit_differences=0 max_delta=0 copy_ms=0.037891 blit_ms=0.038086"
+    },
+    {
+      "format": 37,
+      "width": 2340,
+      "height": 1080,
+      "result": "RESULT PASS format=37 extent=2340x1080 bytes=10108800 copy_wrong=0 blit_differences=0 max_delta=0 copy_ms=1.258525 blit_ms=1.243823"
+    },
+    {
+      "format": 44,
+      "width": 257,
+      "height": 131,
+      "result": "RESULT PASS format=44 extent=257x131 bytes=134668 copy_wrong=0 blit_differences=0 max_delta=0 copy_ms=0.034424 blit_ms=0.034434"
+    },
+    {
+      "format": 44,
+      "width": 2340,
+      "height": 1080,
+      "result": "RESULT PASS format=44 extent=2340x1080 bytes=10108800 copy_wrong=0 blit_differences=0 max_delta=0 copy_ms=1.183838 blit_ms=1.179429"
+    },
+    {
+      "format": 43,
+      "width": 257,
+      "height": 131,
+      "result": "RESULT PASS format=43 extent=257x131 bytes=134668 copy_wrong=0 blit_differences=47927 max_delta=20 copy_ms=0.033726 blit_ms=0.037080"
+    },
+    {
+      "format": 43,
+      "width": 2340,
+      "height": 1080,
+      "result": "RESULT PASS format=43 extent=2340x1080 bytes=10108800 copy_wrong=0 blit_differences=4654777 max_delta=21 copy_ms=1.165903 blit_ms=1.550752"
+    },
+    {
+      "format": 50,
+      "width": 257,
+      "height": 131,
+      "result": "RESULT PASS format=50 extent=257x131 bytes=134668 copy_wrong=0 blit_differences=47927 max_delta=20 copy_ms=0.033867 blit_ms=0.038208"
+    },
+    {
+      "format": 50,
+      "width": 2340,
+      "height": 1080,
+      "result": "RESULT PASS format=50 extent=2340x1080 bytes=10108800 copy_wrong=0 blit_differences=4654777 max_delta=21 copy_ms=1.130835 blit_ms=1.531602"
+    }
+  ],
+  "one_gameplay_window": {
+    "duration_seconds": 44.991067265,
+    "presentations_per_second": 23.486150786035154,
+    "hud_fps_mean": 23.7,
+    "p95_interval_ms": 49.974336,
+    "timestamp_reconciliation": {
+      "trace_count": 1052,
+      "raw_count": 1057,
+      "matched": 1052,
+      "internal_missing": 0,
+      "edge_only_unmatched": 5,
+      "max_matching_error_ns": 195.5
+    }
+  },
+  "fps_gain_verified": false,
+  "locked_30fps_verified": false,
+  "comparison_status": "Control capture interrupted by ADB disconnection; excluded. No matched v44/v45 gain claim.",
+  "limits": [
+    "Short diagnostic window, not prolonged stability validation.",
+    "No water in the fixed scene; water glitches not revalidated.",
+    "Trace and screenshots add overhead. SurfaceView presents are not independent proof of unique simulated frames."
+  ]
+}
