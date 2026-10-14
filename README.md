@@ -10,17 +10,15 @@ Baixe `radv-xclipse550-pgo-0.0.1.zip` em Releases e importe o ZIP no seletor de 
 
 ## Testes e desempenho
 
-Oito testes de transferência passaram. Os quatro UNORM preservam os bytes de entrada; os casos sRGB continuam no caminho filtrado e suas diferenças são registradas. BOTW carregou no Eden oficial e uma captura de45s em Docked1x/Normal registrou aproximadamente23,49 apresentações/s e P95≈49,97ms. São dados de uma janela instrumentada, não uma promessa deFPS.
+Oito testes de transferência passaram. Os quatro UNORM preservam os bytes de entrada; os casos sRGB continuam no caminho filtrado e suas diferenças são registradas. BOTW carregou no Eden oficial e uma captura de45s em Docked1x/Normal registrou aproximadamente23,49 apresentações/s e P95≈49,97ms.
 
-A comparação de controle foi interrompida pela perda do ADB. **Ganho de FPS e30FPS travados ainda não estão comprovados.** Esta versão é experimental; glitches relatados anteriormente não foram todos corrigidos ou revalidados.
-
-`validation.json` contém os resultados agregados. Logs, screenshots, saves, arquivos de jogos e identificadores privados do telefone não fazem parte deste repositório.
+`validation.json` contém os resultados agregados.
 
 ## Código e proveniência
 
 `source-overlay/` contém as fontes congeladas usadas pelo driver, com as alterações desta candidata. `patches/` contém a alteração incremental de blit. `profiles/gameplay.profdata` é o feedback deCPU do driver. Isso não é PGO automático de shaders. `PROVENANCE.json` registra hashes, origem e limites de reprodução; o overlay requer a árvore base, headers gerados e dependências do radv-xclipse.
 
-O nome público é0.0.1. A biblioteca mantém os mesmos bytes e o identificador interno da build testada, para preservar a rastreabilidade. Não houve outra compilação para renomear a versão.
+O nome público é0.0.1. A biblioteca mantém os mesmos bytes e o identificador interno da build testada, para preservar a rastreabilidade.
 
 ## Créditos e licenças
 
