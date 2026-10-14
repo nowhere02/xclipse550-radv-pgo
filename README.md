@@ -10,14 +10,25 @@ Baixe `radv-xclipse550-pgo-0.0.1.zip` em Releases e importe o ZIP no seletor de 
 
 ## Testes e desempenho
 
-Oito testes de transferência passaram. Os quatro UNORM preservam os bytes de entrada; os casos sRGB continuam no caminho filtrado e suas diferenças são registradas. BOTW carregou no Eden oficial e uma captura de45s em Docked1x/Normal registrou aproximadamente23,49 apresentações/s e P95≈49,97ms.
+Oito testes de transferência passaram. Os quatro UNORM preservam os bytes de entrada; os casos sRGB continuam no caminho filtrado e suas diferenças são registradas. BOTW carregou no Eden oficial. Uma primeira captura isolada de 45 s em Docked 1×/Normal registrou aproximadamente 23,49 apresentações/s.
 
-`validation.json` contém os resultados agregados.
+A comparação seguinte produziu um par completo de 45 s por driver, com o mesmo APK, configurações e geometria da câmera:
+
+| Medida | 0.0.1 | Controle v44 |
+| --- | ---: | ---: |
+| Apresentações da SurfaceView/s | 23,76 | 23,44 |
+| FPS médio do HUD, 8 amostras | 23,78 | 23,55 |
+| P95 dos intervalos entre apresentações | 49,97 ms | 49,99 ms |
+
+A diferença de apresentações foi **+1,37% nesse único par**, sem confirmação de ganho sustentado. A candidata foi medida primeiro e mais fria; o ABBA planejado foi interrompido pelo ADB. Os timestamps foram reconciliados sem lacunas internas nas duas janelas.
+
+![Comparação descritiva de um único par completo](benchmark-screening.png)
+
+`validation.json` contém os resultados agregados e os limites da comparação.
 
 ## Código e proveniência
 
 `source-overlay/` contém as fontes congeladas usadas pelo driver, com as alterações desta candidata. `patches/` contém a alteração incremental de blit. `profiles/gameplay.profdata` é o feedback deCPU do driver. Isso não é PGO automático de shaders. `PROVENANCE.json` registra hashes, origem e limites de reprodução; o overlay requer a árvore base, headers gerados e dependências do radv-xclipse.
-
 
 ## Créditos e licenças
 
