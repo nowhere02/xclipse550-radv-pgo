@@ -5,9 +5,10 @@
   "settings": {
     "docked": true,
     "resolution": "1x",
-    "accuracy": "Normal",
+    "accuracy": "Low",
     "frame_generation": false,
-    "speed_percent": 100
+    "speed_percent": 100,
+    "gpu_accuracy_numeric": 0
   },
   "transfer_tests": [
     {
@@ -197,7 +198,8 @@
             "presentations_per_second": 23.0,
             "edge_window": true
           }
-        ]
+        ],
+        "accuracy_label_from_startup": "Low"
       },
       {
         "driver": "v44",
@@ -308,7 +310,8 @@
             "presentations_per_second": 23.2,
             "edge_window": true
           }
-        ]
+        ],
+        "accuracy_label_from_startup": "Low"
       }
     ],
     "presentation_difference_percent": 1.3661252875595054,
@@ -317,5 +320,15 @@
     "candidate_measured_first": true,
     "central_35_second_difference_percent": 1.5873015873016039
   },
-  "measurement_update_utc": "2026-10-14T03:22:51.266608+00:00"
+  "measurement_update_utc": "2026-10-14T03:22:51.266608+00:00",
+  "accuracy_label_verification": {
+    "value": 0,
+    "label_from_current_apk_startup_logs": "Low",
+    "previous_report_label": "Normal",
+    "previous_label_was_incorrect": true,
+    "performance_values_unchanged": true,
+    "raw_capture_records_unchanged": true,
+    "errata": "MEASUREMENT-ERRATA.md",
+    "legacy_source_archive_documents_retain_initial_incorrect_label": true
+  }
 }

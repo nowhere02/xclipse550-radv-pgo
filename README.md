@@ -10,7 +10,7 @@ Baixe `radv-xclipse550-pgo-0.0.1.zip` em Releases e importe o ZIP no seletor de 
 
 ## Testes e desempenho
 
-Oito testes de transferência passaram. Os quatro UNORM preservam os bytes de entrada; os casos sRGB continuam no caminho filtrado e suas diferenças são registradas. BOTW carregou no Eden oficial. Uma primeira captura isolada de 45 s em Docked 1×/Normal registrou aproximadamente 23,49 apresentações/s.
+Oito testes de transferência passaram. Os quatro UNORM preservam os bytes de entrada; os casos sRGB continuam no caminho filtrado e suas diferenças são registradas. BOTW carregou no Eden oficial. Uma primeira captura isolada de 45 s em Docked 1×/Low registrou aproximadamente 23,49 apresentações/s.
 
 A comparação seguinte produziu um par completo de 45 s por driver, com o mesmo APK, configurações e geometria da câmera:
 
@@ -25,6 +25,8 @@ A diferença de apresentações foi **+1,37% nesse único par**, sem confirmaç�
 ![Comparação descritiva de um único par completo](benchmark-screening.png)
 
 `validation.json` contém os resultados agregados e os limites da comparação.
+
+O ajuste `gpu_accuracy=0` aparece como **Low** nos logs deste APK do Eden. O rótulo Normal usado no registro inicial foi corrigido; veja a [correção dos metadados](MEASUREMENT-ERRATA.md).
 
 ## Código e proveniência
 
